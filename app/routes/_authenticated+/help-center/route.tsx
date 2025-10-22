@@ -1,3 +1,3 @@
-import ComingSoon from '~/components/coming-soon'
-
-export default ComingSoon
+export default function HelpCenter() {
+  return null
+}

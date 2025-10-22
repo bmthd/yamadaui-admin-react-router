@@ -1,19 +1,6 @@
-import { useEffect } from 'react'
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  data,
-  isRouteErrorResponse,
-  useRouteError,
-} from 'react-router'
+import { Links, Meta, Scripts, ScrollRestoration, data } from 'react-router'
 import { getToast } from 'remix-toast'
-import { toast } from 'sonner'
-import { Toaster } from '~/components/ui/sonner'
 import type { Route } from './+types/root'
-import { ThemeProvider } from './components/theme-provider'
 import './index.css'
 
 export const meta: Route.MetaFunction = () => {
@@ -35,8 +22,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Links />
       </head>
       <body className="group/body scroll-smooth">
-        <Toaster closeButton richColors />
-        <ThemeProvider attribute="class">{children}</ThemeProvider>
+        {children}
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -44,50 +30,14 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-export default function App({
-  loaderData: { toastData },
-}: Route.ComponentProps) {
-  useEffect(() => {
-    if (!toastData) {
-      return
-    }
-    let toastFn = toast.info
-    if (toastData.type === 'error') {
-      toastFn = toast.error
-    } else if (toastData.type === 'success') {
-      toastFn = toast.success
-    }
-    toastFn(toastData.message, {
-      description: toastData.description,
-      position: 'top-right',
-    })
-  }, [toastData])
-
-  return <Outlet />
+export default function App() {
+//   {
+//   loaderData: { toastData },
+// }
+// : Route.ComponentProps
+  return null
 }
 
 export function ErrorBoundary() {
-  const error = useRouteError()
-
-  let status = 0
-  let statusText = ''
-  let message = ''
-  if (isRouteErrorResponse(error)) {
-    status = error.status
-    statusText = error.statusText
-    message = error.data
-  } else if (error instanceof Error) {
-    status = 500
-    statusText = 'Internal Server Error'
-    message = error.message
-  }
-
-  return (
-    <div className="m-8">
-      <h1 className="text-4xl">
-        {status} {statusText}
-      </h1>
-      <div className="mt-4">{message}</div>
-    </div>
-  )
+  return null
 }
