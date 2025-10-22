@@ -1,0 +1,5 @@
+pre-commit:
+  commands:
+    validate:
+      run: pnpm validate
+      fail_text: 'Validation failed. Please fix errors and commit again.'

@@ -10,7 +10,8 @@
     "format": "prettier --check . --experimental-cli",
     "format:fix": "prettier --write . --experimental-cli",
     "typecheck": "react-router typegen && pnpm tsgo --noemit",
-    "validate": "run-p lint format typecheck"
+    "validate": "run-p lint format typecheck",
+    "prepare": "lefthook install"
   },
   "dependencies": {
     "@conform-to/react": "^1.8.2",
@@ -42,6 +43,7 @@
     "@types/react-dom": "^19.2.0",
     "@vercel/react-router": "1.2.3",
     "@yamada-ui/cli": "^2.0.3",
+    "lefthook": "^2.0.0",
     "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "^4.2.0",
     "prettier-plugin-tailwindcss": "^0.6.14",
