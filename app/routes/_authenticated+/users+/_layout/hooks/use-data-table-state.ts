@@ -1,18 +1,18 @@
-import { useMemo } from 'react'
-import { useSearchParams } from 'react-router'
-import { z } from 'zod'
-import { useDebounce } from '~/hooks/use-debounce'
+import { useMemo } from "react"
+import { useSearchParams } from "react-router"
+import { z } from "zod"
+import { useDebounce } from "~/hooks/use-debounce"
 
 // Constants
-export const PAGINATION_PER_PAGE_DEFAULT = '20'
-export const PAGINATION_PER_PAGE_ITEMS = ['10', '20', '30', '40', '50'] as const
+export const PAGINATION_PER_PAGE_DEFAULT = "20"
+export const PAGINATION_PER_PAGE_ITEMS = ["10", "20", "30", "40", "50"] as const
 export type PerPageString = (typeof PAGINATION_PER_PAGE_ITEMS)[number]
 
 // Define the types for filters and pagination
 export const QuerySchema = z.object({
   username: z.preprocess(
     (val) => (val === null ? undefined : val),
-    z.string().optional().default(''),
+    z.string().optional().default("")
   ),
 })
 
@@ -24,21 +24,21 @@ export const FilterSchema = z.object({
 export const SortSchema = z.object({
   sort_by: z.preprocess(
     (val) => (val === null ? undefined : val),
-    z.string().optional(),
+    z.string().optional()
   ),
   sort_order: z.preprocess(
     (val) => (val === null ? undefined : val),
     z
-      .union([z.literal('asc'), z.literal('desc')])
+      .union([z.literal("asc"), z.literal("desc")])
       .optional()
-      .default('asc'),
+      .default("asc")
   ),
 })
 
 export const PaginationSchema = z.object({
   page: z.preprocess(
     (val) => (val === null ? undefined : val),
-    z.string().optional().default('1').transform(Number),
+    z.string().optional().default("1").transform(Number)
   ),
   per_page: z.preprocess(
     (val) => (val === null ? undefined : val),
@@ -46,7 +46,7 @@ export const PaginationSchema = z.object({
       .enum(PAGINATION_PER_PAGE_ITEMS)
       .optional()
       .default(PAGINATION_PER_PAGE_DEFAULT)
-      .transform(Number),
+      .transform(Number)
   ),
 })
 
@@ -61,28 +61,28 @@ export function useDataTableState() {
 
   const queries: Queries = useMemo(() => {
     return QuerySchema.parse({
-      username: searchParams.get('username'),
+      username: searchParams.get("username"),
     })
   }, [searchParams])
 
   const filters: Filters = useMemo(() => {
     return FilterSchema.parse({
-      status: searchParams.getAll('status'),
-      role: searchParams.getAll('role'),
+      status: searchParams.getAll("status"),
+      role: searchParams.getAll("role"),
     })
   }, [searchParams])
 
   const sort: Sort = useMemo(() => {
     return SortSchema.parse({
-      sort_by: searchParams.get('sort_by'),
-      sort_order: searchParams.get('sort_order') as 'asc' | 'desc' | null,
+      sort_by: searchParams.get("sort_by"),
+      sort_order: searchParams.get("sort_order") as "asc" | "desc" | null,
     })
   }, [searchParams])
 
   const pagination: Pagination = useMemo(() => {
     return PaginationSchema.parse({
-      page: searchParams.get('page'),
-      per_page: searchParams.get('per_page'),
+      page: searchParams.get("page"),
+      per_page: searchParams.get("per_page"),
     })
   }, [searchParams])
 
@@ -91,16 +91,16 @@ export function useDataTableState() {
       setSearchParams(
         (prev) => {
           for (const [key, value] of Object.entries(newQueries)) {
-            if (value === undefined || value === '') {
+            if (value === undefined || value === "") {
               prev.delete(key)
             } else {
               prev.set(key, value)
             }
           }
-          prev.delete('page')
+          prev.delete("page")
           return prev
         },
-        { preventScrollReset: true },
+        { preventScrollReset: true }
       )
     })
   }
@@ -120,10 +120,10 @@ export function useDataTableState() {
             prev.delete(key)
           }
         }
-        prev.delete('page')
+        prev.delete("page")
         return prev
       },
-      { preventScrollReset: true },
+      { preventScrollReset: true }
     )
   }
 
@@ -131,16 +131,16 @@ export function useDataTableState() {
     setSearchParams(
       (prev) => {
         if (newSort.sort_by) {
-          prev.set('sort_by', newSort.sort_by)
-          prev.set('sort_order', newSort.sort_order || 'asc')
+          prev.set("sort_by", newSort.sort_by)
+          prev.set("sort_order", newSort.sort_order || "asc")
         } else {
-          prev.delete('sort_by')
-          prev.delete('sort_order')
+          prev.delete("sort_by")
+          prev.delete("sort_order")
         }
-        prev.delete('page')
+        prev.delete("page")
         return prev
       },
-      { preventScrollReset: true },
+      { preventScrollReset: true }
     )
   }
 
@@ -149,28 +149,28 @@ export function useDataTableState() {
       (prev) => {
         if (newPagination.page !== undefined) {
           if (newPagination.page === 1) {
-            prev.delete('page')
+            prev.delete("page")
           } else {
-            prev.set('page', String(newPagination.page))
+            prev.set("page", String(newPagination.page))
           }
         }
 
         if (newPagination.per_page !== undefined) {
           if (newPagination.per_page === Number(PAGINATION_PER_PAGE_DEFAULT)) {
-            prev.delete('per_page')
+            prev.delete("per_page")
           } else {
-            prev.set('per_page', String(newPagination.per_page))
+            prev.set("per_page", String(newPagination.per_page))
           }
         }
         return prev
       },
-      { preventScrollReset: true },
+      { preventScrollReset: true }
     )
   }
 
   const isFiltered =
     Object.values(filters).some((filterArray) => filterArray.length > 0) ||
-    Object.values(queries).some((query) => query !== '')
+    Object.values(queries).some((query) => query !== "")
   const resetFilters = () => {
     setSearchParams({}, { preventScrollReset: true })
   }

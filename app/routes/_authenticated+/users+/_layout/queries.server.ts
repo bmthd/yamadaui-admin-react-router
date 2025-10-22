@@ -1,4 +1,4 @@
-import { users as initialUsers } from '../_shared/data/users'
+import { users as initialUsers } from "../_shared/data/users"
 
 interface ListFilteredUsersArgs {
   username: string
@@ -6,7 +6,7 @@ interface ListFilteredUsersArgs {
   currentPage: number
   pageSize: number
   sortBy?: string
-  sortOrder: 'asc' | 'desc'
+  sortOrder: "asc" | "desc"
 }
 
 export const listFilteredUsers = ({
@@ -35,12 +35,12 @@ export const listFilteredUsers = ({
       const aValue = a[sortBy as keyof typeof a]
       const bValue = b[sortBy as keyof typeof b]
 
-      if (typeof aValue !== 'string' || typeof bValue !== 'string') {
+      if (typeof aValue !== "string" || typeof bValue !== "string") {
         console.warn(`Invalid sort field type for ${sortBy}`)
         return 0
       }
 
-      return sortOrder === 'asc'
+      return sortOrder === "asc"
         ? aValue.localeCompare(bValue)
         : bValue.localeCompare(aValue)
     })
@@ -52,7 +52,7 @@ export const listFilteredUsers = ({
   return {
     data: users.slice(
       (newCurrentPage - 1) * pageSize,
-      newCurrentPage * pageSize,
+      newCurrentPage * pageSize
     ),
     pagination: {
       currentPage: newCurrentPage,
@@ -88,7 +88,7 @@ export const getFacetedCounts = ({
         return Object.entries(filters).every(([key, value]) => {
           if (key === facet || value.length === 0) return true
           return value.includes(
-            (user as unknown as Record<string, string>)[key],
+            (user as unknown as Record<string, string>)[key]
           )
         })
       })
@@ -100,7 +100,7 @@ export const getFacetedCounts = ({
           (acc[(user as unknown as Record<string, string>)[facet]] ?? 0) + 1
         return acc
       },
-      {} as Record<string, number>,
+      {} as Record<string, number>
     )
   }
 

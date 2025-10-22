@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef } from "react"
 
 type Debounce = (fn: () => void) => void
 
@@ -13,7 +13,7 @@ export const useDebounce = (timeout = 500): Debounce => {
         fn()
       }, timeout)
     },
-    [timeout],
+    [timeout]
   )
   return debounce
 }

@@ -1,13 +1,13 @@
-import { setTimeout as sleep } from 'node:timers/promises'
-import { data } from 'react-router'
-import { dataWithSuccess } from 'remix-toast'
-import { tasks } from '../_shared/data/tasks'
-import type { Route } from './+types/route'
+import { setTimeout as sleep } from "node:timers/promises"
+import { data } from "react-router"
+import { dataWithSuccess } from "remix-toast"
+import { tasks } from "../_shared/data/tasks"
+import type { Route } from "./+types/route"
 
 export const action = async ({ params }: Route.ActionArgs) => {
   const taskIndex = tasks.findIndex((t) => t.id === params.task)
   if (taskIndex === -1) {
-    throw data(null, { status: 404, statusText: 'Task not found' })
+    throw data(null, { status: 404, statusText: "Task not found" })
   }
 
   // Delete the task
@@ -19,9 +19,9 @@ export const action = async ({ params }: Route.ActionArgs) => {
       done: true,
     },
     {
-      message: 'Task deleted successfully',
+      message: "Task deleted successfully",
       description: `Task with ID ${params.task} has been deleted.`,
-    },
+    }
   )
 }
 

@@ -1,10 +1,10 @@
-import type { z } from 'zod'
+import type { z } from "zod"
 import type {
   FilterSchema,
   PaginationSchema,
   SearchSchema,
   SortSchema,
-} from './schema'
+} from "./schema"
 
 export type Search = z.infer<typeof SearchSchema>
 export type Filters = z.infer<typeof FilterSchema>

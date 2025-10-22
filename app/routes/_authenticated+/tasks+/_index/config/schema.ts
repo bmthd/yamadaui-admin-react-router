@@ -1,16 +1,16 @@
-import { z } from 'zod/v4'
+import { z } from "zod/v4"
 import {
   FILTER_FIELDS,
   PAGINATION_PER_PAGE_DEFAULT,
   PAGINATION_PER_PAGE_ITEMS,
   SEARCH_FIELD,
-} from '../config'
+} from "../config"
 
 // Define the schema for the search query
 export const SearchSchema = z.object({
   [SEARCH_FIELD]: z.preprocess(
     (val) => (val === null ? undefined : val),
-    z.string().optional().default(''),
+    z.string().optional().default("")
   ),
 })
 
@@ -24,22 +24,22 @@ export const FilterSchema = z.object(
     {} as Record<
       (typeof FILTER_FIELDS)[number],
       z.ZodDefault<z.ZodOptional<z.ZodArray<z.ZodString>>>
-    >,
-  ),
+    >
+  )
 )
 
 // Define the schema for sorting
 export const SortSchema = z.object({
   sort_by: z.preprocess(
     (val) => (val === null ? undefined : val),
-    z.string().optional(),
+    z.string().optional()
   ),
   sort_order: z.preprocess(
     (val) => (val === null ? undefined : val),
     z
-      .union([z.literal('asc'), z.literal('desc')])
+      .union([z.literal("asc"), z.literal("desc")])
       .optional()
-      .default('asc'),
+      .default("asc")
   ),
 })
 
@@ -47,7 +47,7 @@ export const SortSchema = z.object({
 export const PaginationSchema = z.object({
   page: z.preprocess(
     (val) => (val === null ? undefined : val),
-    z.string().optional().default('1').transform(Number),
+    z.string().optional().default("1").transform(Number)
   ),
   per_page: z.preprocess(
     (val) => (val === null ? undefined : val),
@@ -55,7 +55,7 @@ export const PaginationSchema = z.object({
       .enum(PAGINATION_PER_PAGE_ITEMS)
       .optional()
       .default(PAGINATION_PER_PAGE_DEFAULT)
-      .transform(Number),
+      .transform(Number)
   ),
 })
 
@@ -67,17 +67,17 @@ export const parseQueryParams = (request: Request) => {
   })
   const filters = FilterSchema.parse(
     Object.fromEntries(
-      FILTER_FIELDS.map((field) => [field, searchParams.getAll(field)]),
-    ),
+      FILTER_FIELDS.map((field) => [field, searchParams.getAll(field)])
+    )
   )
   const { sort_by: sortBy, sort_order: sortOrder } = SortSchema.parse({
-    sort_by: searchParams.get('sort_by'),
-    sort_order: searchParams.get('sort_order'),
+    sort_by: searchParams.get("sort_by"),
+    sort_order: searchParams.get("sort_order"),
   })
 
   const { page, per_page: perPage } = PaginationSchema.parse({
-    page: searchParams.get('page'),
-    per_page: searchParams.get('per_page'),
+    page: searchParams.get("page"),
+    per_page: searchParams.get("per_page"),
   })
 
   return { search, filters, sortBy, sortOrder, page, perPage }

@@ -1,18 +1,18 @@
-import { useMemo } from 'react'
-import { useSearchParams } from 'react-router'
-import { useDebounce } from '~/hooks/use-debounce'
+import { useMemo } from "react"
+import { useSearchParams } from "react-router"
+import { useDebounce } from "~/hooks/use-debounce"
 import {
   FILTER_FIELDS,
   FilterSchema,
-  PAGINATION_PER_PAGE_DEFAULT,
-  PaginationSchema,
-  SearchSchema,
-  SortSchema,
   type Filters,
+  PAGINATION_PER_PAGE_DEFAULT,
   type Pagination,
+  PaginationSchema,
   type Search,
+  SearchSchema,
   type Sort,
-} from '../config'
+  SortSchema,
+} from "../config"
 
 export function useDataTableState() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -20,29 +20,29 @@ export function useDataTableState() {
 
   const search: Search = useMemo(() => {
     return SearchSchema.parse({
-      title: searchParams.get('title'),
+      title: searchParams.get("title"),
     })
   }, [searchParams])
 
   const filters: Filters = useMemo(() => {
     return FilterSchema.parse(
       Object.fromEntries(
-        FILTER_FIELDS.map((field) => [field, searchParams.getAll(field)]),
-      ),
+        FILTER_FIELDS.map((field) => [field, searchParams.getAll(field)])
+      )
     )
   }, [searchParams])
 
   const sort: Sort = useMemo(() => {
     return SortSchema.parse({
-      sort_by: searchParams.get('sort_by'),
-      sort_order: searchParams.get('sort_order') as 'asc' | 'desc' | null,
+      sort_by: searchParams.get("sort_by"),
+      sort_order: searchParams.get("sort_order") as "asc" | "desc" | null,
     })
   }, [searchParams])
 
   const pagination: Pagination = useMemo(() => {
     return PaginationSchema.parse({
-      page: searchParams.get('page'),
-      per_page: searchParams.get('per_page'),
+      page: searchParams.get("page"),
+      per_page: searchParams.get("per_page"),
     })
   }, [searchParams])
 
@@ -51,16 +51,16 @@ export function useDataTableState() {
       setSearchParams(
         (prev) => {
           for (const [key, value] of Object.entries(newSearch)) {
-            if (value === undefined || value === '') {
+            if (value === undefined || value === "") {
               prev.delete(key)
             } else {
               prev.set(key, value)
             }
           }
-          prev.delete('page')
+          prev.delete("page")
           return prev
         },
-        { preventScrollReset: true },
+        { preventScrollReset: true }
       )
     })
   }
@@ -80,10 +80,10 @@ export function useDataTableState() {
             prev.delete(key)
           }
         }
-        prev.delete('page')
+        prev.delete("page")
         return prev
       },
-      { preventScrollReset: true },
+      { preventScrollReset: true }
     )
   }
 
@@ -91,16 +91,16 @@ export function useDataTableState() {
     setSearchParams(
       (prev) => {
         if (newSort.sort_by) {
-          prev.set('sort_by', newSort.sort_by)
-          prev.set('sort_order', newSort.sort_order || 'asc')
+          prev.set("sort_by", newSort.sort_by)
+          prev.set("sort_order", newSort.sort_order || "asc")
         } else {
-          prev.delete('sort_by')
-          prev.delete('sort_order')
+          prev.delete("sort_by")
+          prev.delete("sort_order")
         }
-        prev.delete('page')
+        prev.delete("page")
         return prev
       },
-      { preventScrollReset: true },
+      { preventScrollReset: true }
     )
   }
 
@@ -109,28 +109,28 @@ export function useDataTableState() {
       (prev) => {
         if (newPagination.page !== undefined) {
           if (newPagination.page === 1) {
-            prev.delete('page')
+            prev.delete("page")
           } else {
-            prev.set('page', String(newPagination.page))
+            prev.set("page", String(newPagination.page))
           }
         }
 
         if (newPagination.per_page !== undefined) {
           if (newPagination.per_page === Number(PAGINATION_PER_PAGE_DEFAULT)) {
-            prev.delete('per_page')
+            prev.delete("per_page")
           } else {
-            prev.set('per_page', String(newPagination.per_page))
+            prev.set("per_page", String(newPagination.per_page))
           }
         }
         return prev
       },
-      { preventScrollReset: true },
+      { preventScrollReset: true }
     )
   }
 
   const isFiltered =
     Object.values(filters).some((filterArray) => filterArray.length > 0) ||
-    Object.values(search).some((query) => query !== '')
+    Object.values(search).some((query) => query !== "")
 
   const resetFilters = () => {
     setSearchParams({}, { preventScrollReset: true })

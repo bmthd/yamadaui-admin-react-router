@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router'
+import { useEffect } from "react"
+import { useLocation, useNavigate } from "react-router"
 
 /**
  * A smart navigation hook that can automatically save the current location and provide a goBack function.
@@ -40,21 +40,21 @@ export function useSmartNavigation(options?: {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const { autoSave = false, baseUrl = '/' } = options || {}
+  const { autoSave = false, baseUrl = "/" } = options || {}
 
   // 自動保存
   useEffect(() => {
     if (autoSave && baseUrl === location.pathname) {
       sessionStorage.setItem(
         `nav_${baseUrl}`,
-        location.pathname + location.search,
+        location.pathname + location.search
       )
     }
   }, [location, baseUrl, autoSave])
 
   // SSR-safe fallback
   const getBackUrl = () => {
-    if (typeof window === 'undefined') return baseUrl // SSR
+    if (typeof window === "undefined") return baseUrl // SSR
     const savedUrl = sessionStorage.getItem(`nav_${baseUrl}`)
     return savedUrl || baseUrl
   }

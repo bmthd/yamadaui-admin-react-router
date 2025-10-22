@@ -1,5 +1,11 @@
 pre-commit:
   commands:
-    validate:
-      run: bun validate
-      fail_text: 'Validation failed. Please fix errors and commit again.'
+    lint:
+      run: bun lint
+      fail_text: 'Linting failed. Please fix errors and commit again.'
+    format:
+      run: bun format:fix
+      fail_text: 'Formatting failed. Please fix errors and commit again.'
+    typecheck:
+      run: bun typecheck
+      fail_text: 'Type checking failed. Please fix errors and commit again.'

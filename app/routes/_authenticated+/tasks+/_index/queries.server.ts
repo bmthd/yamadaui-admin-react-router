@@ -1,6 +1,6 @@
-import type { Task } from '../_shared/data/schema'
-import { tasks as initialTasks } from '../_shared/data/tasks'
-import type { FILTER_FIELDS, Search } from './config'
+import type { Task } from "../_shared/data/schema"
+import { tasks as initialTasks } from "../_shared/data/tasks"
+import type { FILTER_FIELDS, Search } from "./config"
 
 const matchesSearch = (task: Task, search: Search) => {
   const searchTerms = Object.values(search)
@@ -9,7 +9,7 @@ const matchesSearch = (task: Task, search: Search) => {
   if (searchTerms.length === 0) return true
   const taskString = Object.values(task)
     .map((value) => String(value).toLowerCase())
-    .join(' ')
+    .join(" ")
 
   return searchTerms.every((term) => taskString.includes(term))
 }
@@ -20,7 +20,7 @@ interface ListFilteredTasksArgs {
   page: number
   perPage: number
   sortBy?: string
-  sortOrder?: 'asc' | 'desc'
+  sortOrder?: "asc" | "desc"
 }
 
 export const listFilteredTasks = ({
@@ -50,15 +50,15 @@ export const listFilteredTasks = ({
       if (aValue === undefined || bValue === undefined) return 0
 
       // Handle different types appropriately
-      if (typeof aValue === 'number' && typeof bValue === 'number') {
-        return sortOrder === 'asc' ? aValue - bValue : bValue - aValue
+      if (typeof aValue === "number" && typeof bValue === "number") {
+        return sortOrder === "asc" ? aValue - bValue : bValue - aValue
       }
 
       // Convert to string for string comparison
       const aStr = String(aValue)
       const bStr = String(bValue)
 
-      if (sortOrder === 'asc') {
+      if (sortOrder === "asc") {
         return aStr.localeCompare(bStr)
       }
       return bStr.localeCompare(aStr)
@@ -111,7 +111,7 @@ export const getFacetedCounts = ({
           (acc[(task as Record<string, string>)[facet]] ?? 0) + 1
         return acc
       },
-      {} as Record<string, number>,
+      {} as Record<string, number>
     )
   }
 

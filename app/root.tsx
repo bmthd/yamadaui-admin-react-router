@@ -1,10 +1,10 @@
-import { Links, Meta, Scripts, ScrollRestoration, data } from 'react-router'
-import { getToast } from 'remix-toast'
-import type { Route } from './+types/root'
-import './index.css'
+import { data, Links, Meta, Scripts, ScrollRestoration } from "react-router"
+import { getToast } from "remix-toast"
+import type { Route } from "./+types/root"
+import "./index.css"
 
 export const meta: Route.MetaFunction = () => {
-  return [{ title: 'Shadcn Admin React Router v7' }]
+  return [{ title: "Shadcn Admin React Router v7" }]
 }
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
