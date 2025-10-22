@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "additionalDirectories" : [
+      "/home/ubuntu/workspace/shadcn-admin-react-router"
+    ]
+  }
+}
