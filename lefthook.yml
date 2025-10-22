@@ -1,5 +1,5 @@
 pre-commit:
   commands:
     validate:
-      run: pnpm validate
+      run: bun validate
       fail_text: 'Validation failed. Please fix errors and commit again.'

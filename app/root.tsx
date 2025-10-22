@@ -31,10 +31,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 }
 
 export default function App() {
-//   {
-//   loaderData: { toastData },
-// }
-// : Route.ComponentProps
+  //   {
+  //   loaderData: { toastData },
+  // }
+  // : Route.ComponentProps
   return null
 }
 

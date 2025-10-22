@@ -9,7 +9,7 @@
     "lint": "biome lint .",
     "format": "prettier --check . --experimental-cli",
     "format:fix": "prettier --write . --experimental-cli",
-    "typecheck": "react-router typegen && pnpm tsgo --noemit",
+    "typecheck": "react-router typegen && bun tsgo --noemit",
     "validate": "run-p lint format typecheck",
     "prepare": "lefthook install"
   },
@@ -56,11 +56,9 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@biomejs/biome",
-      "esbuild",
-      "workerd"
-    ]
-  }
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "esbuild",
+    "workerd"
+  ]
 }

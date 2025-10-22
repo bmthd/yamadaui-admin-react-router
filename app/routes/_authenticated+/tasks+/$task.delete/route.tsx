@@ -26,14 +26,14 @@ export const action = async ({ params }: Route.ActionArgs) => {
 }
 
 export function TaskDeleteConfirmDialog() {
-//   {
-//   task,
-//   open,
-//   onOpenChange,
-// }: {
-//   task: Task
-//   open: boolean
-//   onOpenChange: (v: boolean) => void
-// }
+  //   {
+  //   task,
+  //   open,
+  //   onOpenChange,
+  // }: {
+  //   task: Task
+  //   open: boolean
+  //   onOpenChange: (v: boolean) => void
+  // }
   return null
 }
