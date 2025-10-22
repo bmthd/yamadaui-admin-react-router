@@ -1,7 +1,9 @@
-import { data, Links, Meta, Scripts, ScrollRestoration } from "react-router"
+import { useEffect } from "react"
+import { data, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router"
 import { getToast } from "remix-toast"
+import { toast } from "sonner"
+import { UIProvider } from "~/ui"
 import type { Route } from "./+types/root"
-import "./index.css"
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Shadcn Admin React Router v7" }]
@@ -22,7 +24,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Links />
       </head>
       <body className="group/body scroll-smooth">
-        {children}
+        <UIProvider>{children}</UIProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -30,12 +32,26 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-export default function App() {
-  //   {
-  //   loaderData: { toastData },
-  // }
-  // : Route.ComponentProps
-  return null
+export default function App({
+  loaderData: { toastData },
+}: Route.ComponentProps) {
+  useEffect(() => {
+    if (!toastData) {
+      return
+    }
+    let toastFn = toast.info
+    if (toastData.type === 'error') {
+      toastFn = toast.error
+    } else if (toastData.type === 'success') {
+      toastFn = toast.success
+    }
+    toastFn(toastData.message, {
+      description: toastData.description,
+      position: 'top-right',
+    })
+  }, [toastData])
+
+  return <Outlet />
 }
 
 export function ErrorBoundary() {

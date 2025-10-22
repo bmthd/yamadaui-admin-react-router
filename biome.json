@@ -26,6 +26,10 @@
       }
     }
   },
+  "plugins": [
+    "rules/no-direct-dom-elements.grit",
+    "rules/no-lucide-react-imports.grit"
+  ],
   "javascript": {
     "formatter": {
       "jsxQuoteStyle": "double",
