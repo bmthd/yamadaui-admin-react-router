@@ -1,5 +1,12 @@
 import { useEffect } from "react"
-import { data, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router"
+import {
+  data,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from "react-router"
 import { getToast } from "remix-toast"
 import { toast } from "sonner"
 import { UIProvider } from "~/ui"
@@ -40,14 +47,14 @@ export default function App({
       return
     }
     let toastFn = toast.info
-    if (toastData.type === 'error') {
+    if (toastData.type === "error") {
       toastFn = toast.error
-    } else if (toastData.type === 'success') {
+    } else if (toastData.type === "success") {
       toastFn = toast.success
     }
     toastFn(toastData.message, {
       description: toastData.description,
-      position: 'top-right',
+      position: "top-right",
     })
   }, [toastData])
 

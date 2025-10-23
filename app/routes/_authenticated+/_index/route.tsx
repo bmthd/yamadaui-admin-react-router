@@ -1,284 +1,202 @@
+import { useOutletContext } from "react-router"
+import {
+  Header,
+  ProfileDropdown,
+  Search,
+  ThemeSwitch,
+  TopNav,
+} from "~/routes/_authenticated+/_layout/header"
 import {
   ActivityIcon,
   Box,
   Button,
   Card,
-  Center,
   CreditCardIcon,
   DollarSignIcon,
   Flex,
   Grid,
   Heading,
-  HStack,
-  Tabs,
+  SegmentedControl,
   Text,
   UsersIcon,
   VStack,
 } from "~/ui"
+import type { DashboardLayoutContext } from "../_layout/route"
+import { Overview } from "./overview"
+import { RecentSales } from "./recent-sales"
+
+const topNav = [
+  { title: "Overview", href: "/", disabled: false },
+  { title: "Customers", href: "/customers", disabled: true },
+  { title: "Products", href: "/products", disabled: true },
+  { title: "Settings", href: "/settings", disabled: true },
+]
+
+const segmentItems = [
+  { label: "Overview", value: "overview", disabled: false },
+  { label: "Analytics", value: "analytics", disabled: true },
+  { label: "Reports", value: "reports", disabled: true },
+  { label: "Notifications", value: "notifications", disabled: true },
+]
 
 export default function Dashboard() {
+  const { onSidebarToggle } = useOutletContext<DashboardLayoutContext>()
+
   return (
-    <Box p={6}>
-      <Flex justify="between" align="center" mb={6}>
-        <Heading size="xl" fontWeight="bold">
-          Dashboard
-        </Heading>
-        <Button>Download</Button>
-      </Flex>
+    <Box>
+      <Header onSidebarToggle={onSidebarToggle}>
+        <TopNav links={topNav} />
+        <Flex ml="auto" align="center" gap={4}>
+          <Search />
+          <ThemeSwitch />
+          <ProfileDropdown />
+        </Flex>
+      </Header>
 
-      <Tabs.Root index={0}>
-        <Box overflowX="auto" pb={2}>
-          <Tabs.List>
-            <Box>Overview</Box>
-            <Box opacity={0.5}>Analytics</Box>
-            <Box opacity={0.5}>Reports</Box>
-            <Box opacity={0.5}>Notifications</Box>
-          </Tabs.List>
-        </Box>
+      <Box px={4} py={6}>
+        <Flex justify="space-between" align="center" mb={6} gap={4} w="full">
+          <Heading size="xl" fontWeight="bold">
+            Dashboard
+          </Heading>
+          <Button>Download</Button>
+        </Flex>
 
-        <Tabs.Panels>
-          <Tabs.Panel index={0}>
-            <VStack gap={6}>
-              <Grid
-                templateColumns={{
-                  base: "1fr",
-                  sm: "repeat(2, 1fr)",
-                  lg: "repeat(4, 1fr)",
-                }}
-                gap={4}
-                w="full"
-              >
-                <Card.Root>
-                  <Card.Header pb={2}>
-                    <Flex justify="between" align="center">
-                      <Text fontSize="sm" fontWeight="medium">
-                        Total Revenue
-                      </Text>
-                      <Box as={DollarSignIcon} boxSize={4} color="gray.500" />
-                    </Flex>
-                  </Card.Header>
-                  <Card.Body pt={0}>
-                    <Text fontSize="2xl" fontWeight="bold">
-                      $45,231.89
+        <VStack gap={6}>
+          <Box overflowX="auto" pb={2}>
+            <SegmentedControl.Root
+              defaultValue="overview"
+              size="sm"
+              minW="max-content"
+            >
+              {segmentItems.map((item) => (
+                <SegmentedControl.Item
+                  key={item.value}
+                  value={item.value}
+                  disabled={item.disabled}
+                  fontWeight="medium"
+                >
+                  {item.label}
+                </SegmentedControl.Item>
+              ))}
+            </SegmentedControl.Root>
+          </Box>
+
+          <VStack gap={6}>
+            <Grid
+              templateColumns={{
+                base: "repeat(4, 1fr)",
+                lg: "repeat(2, 1fr)",
+                md: "1fr",
+              }}
+              gap={4}
+              w="full"
+            >
+              <Card.Root borderWidth="1px" borderColor="gray.200">
+                <Card.Header pb={2}>
+                  <Flex justify="between" align="center">
+                    <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                      Total Revenue
                     </Text>
-                    <Text fontSize="xs" color="gray.500">
-                      +20.1% from last month
+                    <Box as={DollarSignIcon} boxSize={4} color="gray.500" />
+                  </Flex>
+                </Card.Header>
+                <Card.Body pt={0}>
+                  <Text fontSize="2xl" fontWeight="bold" color="gray.900">
+                    $45,231.89
+                  </Text>
+                  <Text fontSize="xs" color="gray.500">
+                    +20.1% from last month
+                  </Text>
+                </Card.Body>
+              </Card.Root>
+
+              <Card.Root borderWidth="1px" borderColor="gray.200">
+                <Card.Header pb={2}>
+                  <Flex justify="between" align="center">
+                    <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                      Subscriptions
                     </Text>
-                  </Card.Body>
-                </Card.Root>
+                    <Box as={UsersIcon} boxSize={4} color="gray.500" />
+                  </Flex>
+                </Card.Header>
+                <Card.Body pt={0}>
+                  <Text fontSize="2xl" fontWeight="bold" color="gray.900">
+                    +2350
+                  </Text>
+                  <Text fontSize="xs" color="gray.500">
+                    +180.1% from last month
+                  </Text>
+                </Card.Body>
+              </Card.Root>
 
-                <Card.Root>
-                  <Card.Header pb={2}>
-                    <Flex justify="between" align="center">
-                      <Text fontSize="sm" fontWeight="medium">
-                        Subscriptions
-                      </Text>
-                      <Box as={UsersIcon} boxSize={4} color="gray.500" />
-                    </Flex>
-                  </Card.Header>
-                  <Card.Body pt={0}>
-                    <Text fontSize="2xl" fontWeight="bold">
-                      +2350
+              <Card.Root borderWidth="1px" borderColor="gray.200">
+                <Card.Header pb={2}>
+                  <Flex justify="between" align="center">
+                    <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                      Sales
                     </Text>
-                    <Text fontSize="xs" color="gray.500">
-                      +180.1% from last month
+                    <Box as={CreditCardIcon} boxSize={4} color="gray.500" />
+                  </Flex>
+                </Card.Header>
+                <Card.Body pt={0}>
+                  <Text fontSize="2xl" fontWeight="bold" color="gray.900">
+                    +12,234
+                  </Text>
+                  <Text fontSize="xs" color="gray.500">
+                    +19% from last month
+                  </Text>
+                </Card.Body>
+              </Card.Root>
+
+              <Card.Root borderWidth="1px" borderColor="gray.200">
+                <Card.Header pb={2}>
+                  <Flex justify="between" align="center">
+                    <Text fontSize="sm" fontWeight="medium" color="gray.700">
+                      Active Now
                     </Text>
-                  </Card.Body>
-                </Card.Root>
+                    <Box as={ActivityIcon} boxSize={4} color="gray.500" />
+                  </Flex>
+                </Card.Header>
+                <Card.Body pt={0}>
+                  <Text fontSize="2xl" fontWeight="bold" color="gray.900">
+                    +573
+                  </Text>
+                  <Text fontSize="xs" color="gray.500">
+                    +201 since last hour
+                  </Text>
+                </Card.Body>
+              </Card.Root>
+            </Grid>
 
-                <Card.Root>
-                  <Card.Header pb={2}>
-                    <Flex justify="between" align="center">
-                      <Text fontSize="sm" fontWeight="medium">
-                        Sales
-                      </Text>
-                      <Box as={CreditCardIcon} boxSize={4} color="gray.500" />
-                    </Flex>
-                  </Card.Header>
-                  <Card.Body pt={0}>
-                    <Text fontSize="2xl" fontWeight="bold">
-                      +12,234
-                    </Text>
-                    <Text fontSize="xs" color="gray.500">
-                      +19% from last month
-                    </Text>
-                  </Card.Body>
-                </Card.Root>
+            <Grid
+              templateColumns={{ base: "4fr 3fr", lg: "1fr" }}
+              gap={4}
+              w="full"
+            >
+              <Card.Root borderWidth="1px" borderColor="gray.200">
+                <Card.Header>
+                  <Heading size="md">Overview</Heading>
+                </Card.Header>
+                <Card.Body>
+                  <Overview />
+                </Card.Body>
+              </Card.Root>
 
-                <Card.Root>
-                  <Card.Header pb={2}>
-                    <Flex justify="between" align="center">
-                      <Text fontSize="sm" fontWeight="medium">
-                        Active Now
-                      </Text>
-                      <Box as={ActivityIcon} boxSize={4} color="gray.500" />
-                    </Flex>
-                  </Card.Header>
-                  <Card.Body pt={0}>
-                    <Text fontSize="2xl" fontWeight="bold">
-                      +573
-                    </Text>
-                    <Text fontSize="xs" color="gray.500">
-                      +201 since last hour
-                    </Text>
-                  </Card.Body>
-                </Card.Root>
-              </Grid>
-
-              <Grid
-                templateColumns={{ base: "1fr", lg: "4fr 3fr" }}
-                gap={4}
-                w="full"
-              >
-                <Card.Root>
-                  <Card.Header>
-                    <Heading size="md">Overview</Heading>
-                  </Card.Header>
-                  <Card.Body pl={2}>
-                    <Center h="350px" bg="gray.50" borderRadius="md">
-                      <Text color="gray.500">
-                        Chart will be implemented later
-                      </Text>
-                    </Center>
-                  </Card.Body>
-                </Card.Root>
-
-                <Card.Root>
-                  <Card.Header>
-                    <Heading size="md">Recent Sales</Heading>
-                    <Text color="gray.500" fontSize="sm">
-                      You made 265 sales this month.
-                    </Text>
-                  </Card.Header>
-                  <Card.Body>
-                    <VStack gap={6}>
-                      <HStack gap={4} w="full">
-                        <Center
-                          w={9}
-                          h={9}
-                          borderRadius="full"
-                          bg="gray.200"
-                          fontSize="sm"
-                          fontWeight="medium"
-                        >
-                          OM
-                        </Center>
-                        <Flex flex={1} justify="between" align="center">
-                          <Box>
-                            <Text fontSize="sm" fontWeight="medium">
-                              Olivia Martin
-                            </Text>
-                            <Text fontSize="sm" color="gray.500">
-                              olivia.martin@email.com
-                            </Text>
-                          </Box>
-                          <Text fontWeight="medium">+$1,999.00</Text>
-                        </Flex>
-                      </HStack>
-
-                      <HStack gap={4} w="full">
-                        <Center
-                          w={9}
-                          h={9}
-                          borderRadius="full"
-                          bg="gray.200"
-                          fontSize="sm"
-                          fontWeight="medium"
-                        >
-                          JL
-                        </Center>
-                        <Flex flex={1} justify="between" align="center">
-                          <Box>
-                            <Text fontSize="sm" fontWeight="medium">
-                              Jackson Lee
-                            </Text>
-                            <Text fontSize="sm" color="gray.500">
-                              jackson.lee@email.com
-                            </Text>
-                          </Box>
-                          <Text fontWeight="medium">+$39.00</Text>
-                        </Flex>
-                      </HStack>
-
-                      <HStack gap={4} w="full">
-                        <Center
-                          w={9}
-                          h={9}
-                          borderRadius="full"
-                          bg="gray.200"
-                          fontSize="sm"
-                          fontWeight="medium"
-                        >
-                          IN
-                        </Center>
-                        <Flex flex={1} justify="between" align="center">
-                          <Box>
-                            <Text fontSize="sm" fontWeight="medium">
-                              Isabella Nguyen
-                            </Text>
-                            <Text fontSize="sm" color="gray.500">
-                              isabella.nguyen@email.com
-                            </Text>
-                          </Box>
-                          <Text fontWeight="medium">+$299.00</Text>
-                        </Flex>
-                      </HStack>
-
-                      <HStack gap={4} w="full">
-                        <Center
-                          w={9}
-                          h={9}
-                          borderRadius="full"
-                          bg="gray.200"
-                          fontSize="sm"
-                          fontWeight="medium"
-                        >
-                          WK
-                        </Center>
-                        <Flex flex={1} justify="between" align="center">
-                          <Box>
-                            <Text fontSize="sm" fontWeight="medium">
-                              William Kim
-                            </Text>
-                            <Text fontSize="sm" color="gray.500">
-                              will@email.com
-                            </Text>
-                          </Box>
-                          <Text fontWeight="medium">+$99.00</Text>
-                        </Flex>
-                      </HStack>
-
-                      <HStack gap={4} w="full">
-                        <Center
-                          w={9}
-                          h={9}
-                          borderRadius="full"
-                          bg="gray.200"
-                          fontSize="sm"
-                          fontWeight="medium"
-                        >
-                          SD
-                        </Center>
-                        <Flex flex={1} justify="between" align="center">
-                          <Box>
-                            <Text fontSize="sm" fontWeight="medium">
-                              Sofia Davis
-                            </Text>
-                            <Text fontSize="sm" color="gray.500">
-                              sofia.davis@email.com
-                            </Text>
-                          </Box>
-                          <Text fontWeight="medium">+$39.00</Text>
-                        </Flex>
-                      </HStack>
-                    </VStack>
-                  </Card.Body>
-                </Card.Root>
-              </Grid>
-            </VStack>
-          </Tabs.Panel>
-        </Tabs.Panels>
-      </Tabs.Root>
+              <Card.Root borderWidth="1px" borderColor="gray.200">
+                <Card.Header>
+                  <Heading size="md">Recent Sales</Heading>
+                  <Text color="gray.500" fontSize="sm">
+                    You made 265 sales this month.
+                  </Text>
+                </Card.Header>
+                <Card.Body>
+                  <RecentSales />
+                </Card.Body>
+              </Card.Root>
+            </Grid>
+          </VStack>
+        </VStack>
+      </Box>
     </Box>
   )
 }
