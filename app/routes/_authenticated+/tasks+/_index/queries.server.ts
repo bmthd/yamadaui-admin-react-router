@@ -34,10 +34,11 @@ export const listFilteredTasks = ({
   const tasks = initialTasks
     .filter((task) => matchesSearch(task, search))
     .filter((task) => {
-      // Filter by other filters
       return Object.entries(filters).every(([key, value]) => {
         if (value.length === 0) return true
-        return value.includes((task as unknown as Record<string, string>)[key])
+        const taskValue = (task as unknown as Record<string, string>)[key]
+        if (taskValue === undefined) return false
+        return value.includes(taskValue)
       })
     })
     .sort((a, b) => {
@@ -100,15 +101,17 @@ export const getFacetedCounts = ({
       .filter((task) => {
         return Object.entries(filters).every(([key, value]) => {
           if (key === facet || value.length === 0) return true
-          return value.includes((task as Record<string, string>)[key])
+          const taskValue = (task as Record<string, string>)[key]
+          if (taskValue === undefined) return false
+          return value.includes(taskValue)
         })
       })
 
-    // Count the occurrences of each facet value
     facetedCounts[facet] = filteredTasks.reduce(
       (acc, task) => {
-        acc[(task as Record<string, string>)[facet]] =
-          (acc[(task as Record<string, string>)[facet]] ?? 0) + 1
+        const facetValue = (task as Record<string, string>)[facet]
+        if (facetValue === undefined) return acc
+        acc[facetValue] = (acc[facetValue] ?? 0) + 1
         return acc
       },
       {} as Record<string, number>

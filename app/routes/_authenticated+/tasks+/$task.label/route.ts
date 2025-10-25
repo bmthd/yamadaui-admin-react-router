@@ -18,9 +18,13 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
     throw dataWithError(submission.error, { message: "Invalid submission" })
   }
 
-  // update task label
+  const task = tasks[taskIndex]
+  if (!task) {
+    throw dataWithError(null, { message: "Task not found" })
+  }
+
   await setTimeout(1000)
-  tasks[taskIndex].label = submission.value.label
+  task.label = submission.value.label
 
   return dataWithSuccess(null, {
     message: "Task label updated successfully",

@@ -17,7 +17,7 @@ export default function DashboardLayout() {
 
   return (
     <Flex h="100vh">
-      <Sidebar isCollapsed={!open} onToggle={onToggle} />
+      <Sidebar isCollapsed={!open} m="sm" rounded="lg" />
       <Box flex={1} overflow="auto">
         <Outlet context={outletContext} />
       </Box>

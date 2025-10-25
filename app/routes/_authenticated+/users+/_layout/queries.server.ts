@@ -19,14 +19,14 @@ export const listFilteredUsers = ({
 }: ListFilteredUsersArgs) => {
   const users = initialUsers
     .filter((user) => {
-      // Filter by title
       return user.username.toLowerCase().includes(username.toLowerCase())
     })
     .filter((user) => {
-      // Filter by other filters
       return Object.entries(filters).every(([key, value]) => {
         if (value.length === 0) return true
-        return value.includes((user as unknown as Record<string, string>)[key])
+        const userValue = (user as unknown as Record<string, string>)[key]
+        if (userValue === undefined) return false
+        return value.includes(userValue)
       })
     })
     .sort((a, b) => {
@@ -83,21 +83,20 @@ export const getFacetedCounts = ({
         // Filter by title
         return user.username.toLowerCase().includes(username.toLowerCase())
       })
-      // Filter by other filters
       .filter((user) => {
         return Object.entries(filters).every(([key, value]) => {
           if (key === facet || value.length === 0) return true
-          return value.includes(
-            (user as unknown as Record<string, string>)[key]
-          )
+          const userValue = (user as unknown as Record<string, string>)[key]
+          if (userValue === undefined) return false
+          return value.includes(userValue)
         })
       })
 
-    // Count the occurrences of each facet value
     facetedCounts[facet] = filteredUsers.reduce(
       (acc, user) => {
-        acc[(user as unknown as Record<string, string>)[facet]] =
-          (acc[(user as unknown as Record<string, string>)[facet]] ?? 0) + 1
+        const facetValue = (user as unknown as Record<string, string>)[facet]
+        if (facetValue === undefined) return acc
+        acc[facetValue] = (acc[facetValue] ?? 0) + 1
         return acc
       },
       {} as Record<string, number>

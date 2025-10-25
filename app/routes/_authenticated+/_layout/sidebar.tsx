@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router"
+import { TeamSwitcher } from "~/components/layout/team-switcher"
 import { sidebarData } from "~/data/sidebar-data"
 import type { NavItem, NavLink } from "~/types/sidebar"
 import {
@@ -7,59 +8,41 @@ import {
   Box,
   Button,
   ChevronRightIcon,
-  ChevronsLeftIcon,
-  Heading,
+  Flex,
+  type FlexProps,
   HStack,
-  IconButton,
   ScrollArea,
+  Show,
   Text,
   useDisclosure,
   VStack,
 } from "~/ui"
 
-interface SidebarProps {
+interface SidebarProps extends FlexProps {
   isCollapsed: boolean
-  onToggle: () => void
 }
 
-export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
+export function Sidebar({ isCollapsed, ...props }: SidebarProps) {
   const location = useLocation()
 
   return (
-    <Box
+    <Flex
       w={isCollapsed ? "16" : "64"}
-      h="100vh"
-      bg="gray.50"
-      borderRight="1px"
-      borderColor="gray.200"
+      bg="bg.panel"
+      borderWidth="1px"
+      borderColor="border.muted"
+      boxShadow="xs"
       transition="width 0.2s ease"
-      display="flex"
       flexDirection="column"
+      {...props}
     >
-      <VStack align="stretch" gap={4} h="full" p={4}>
+      <VStack align="stretch" gap={4} h="full" p="sm">
         {/* Header */}
-        <HStack justify="between" align="center" flexShrink={0}>
-          {!isCollapsed && (
-            <VStack align="start" gap={1}>
-              <Heading size="sm">{sidebarData.teams[0].name}</Heading>
-              <Text fontSize="xs" color="gray.500">
-                {sidebarData.teams[0].plan}
-              </Text>
-            </VStack>
-          )}
-          <IconButton
-            variant="ghost"
-            size="sm"
-            onClick={onToggle}
-            aria-label="Toggle sidebar"
-          >
-            <ChevronsLeftIcon />
-          </IconButton>
-        </HStack>
+        <TeamSwitcher />
 
         {/* Navigation */}
         <ScrollArea flex={1} pr={2}>
-          <VStack align="stretch" gap={6}>
+          <VStack align="stretch" gap={4}>
             {sidebarData.navGroups.map((group) => (
               <NavGroup
                 key={group.title}
@@ -77,7 +60,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
           <UserSection user={sidebarData.user} isCollapsed={isCollapsed} />
         </Box>
       </VStack>
-    </Box>
+    </Flex>
   )
 }
 
@@ -90,9 +73,9 @@ interface NavGroupProps {
 
 function NavGroup({ title, items, isCollapsed, currentPath }: NavGroupProps) {
   return (
-    <VStack align="stretch" gap={2}>
+    <VStack align="stretch" gap={1}>
       {!isCollapsed && (
-        <Text fontSize="xs" fontWeight="semibold" color="gray.500" px={2}>
+        <Text fontSize="xs" fontWeight="semibold" color="gray.500">
           {title}
         </Text>
       )}
@@ -157,7 +140,7 @@ function NavItemComponent({ item, isCollapsed, currentPath }: NavItemProps) {
         isOpen={isOpen}
       />
       {isOpen && (
-        <VStack align="stretch" gap={1} pl={8} pt={1}>
+        <VStack align="stretch" gap={1} pl={4} pt={1}>
           {item.items.map((subItem) => (
             <NavLinkComponent
               key={subItem.title}
@@ -190,31 +173,35 @@ function NavLinkComponent({
     <Button
       as={Link}
       to={item.url}
-      variant={checkIsActive(currentPath, item) ? "solid" : "ghost"}
+      variant="ghost"
+      bg={checkIsActive(currentPath, item) ? "bg.subtle" : undefined}
       size="sm"
       justifyContent="start"
-      w="full"
-      h="auto"
       py={2}
-      px={isSubItem ? 2 : 3}
+      px={isSubItem ? 6 : 3}
       fontSize={isSubItem ? "xs" : "sm"}
+      rounded="md"
     >
       <HStack gap={3} w="full">
-        {item.icon && (
-          <Box as={item.icon} boxSize={isSubItem ? 3 : 4} flexShrink={0} />
-        )}
-        {!isCollapsed && (
-          <>
-            <Text flex={1} textAlign="start">
-              {item.title}
-            </Text>
-            {item.badge && (
-              <Badge size="sm" colorScheme="blue">
-                {item.badge}
-              </Badge>
-            )}
-          </>
-        )}
+        <Show when={!!item.icon}>
+          <Box as={item.icon} boxSize={4} flexShrink={0} />
+        </Show>
+        <Show when={!isCollapsed}>
+          <Text flex={1} textAlign="start">
+            {item.title}
+          </Text>
+          <Show when={item.badge}>
+            <Badge
+              size="sm"
+              variant="subtle"
+              rounded="full"
+              bg="bg.contrast"
+              color="fg.contrast"
+            >
+              {item.badge}
+            </Badge>
+          </Show>
+        </Show>
       </HStack>
     </Button>
   )
@@ -251,6 +238,8 @@ function NavButton({
       py={2}
       px={3}
       onClick={onClick}
+      borderRadius="md"
+      mx={1}
     >
       <HStack gap={3} w="full">
         {icon && <Box as={icon} boxSize={4} flexShrink={0} />}

@@ -10,6 +10,7 @@
     "format": "biome check --formatter-enabled=true --linter-enabled=false .",
     "format:fix": "biome format --write .",
     "typecheck": "react-router typegen && bun tsgo --noemit",
+    "prevalidate": "biome check --fix --unsafe .",
     "validate": "run-p lint format typecheck",
     "prepare": "lefthook install"
   },

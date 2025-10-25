@@ -24,7 +24,7 @@ import {
   WrenchIcon,
 } from "~/ui"
 
-export const sidebarData: SidebarData = {
+export const sidebarData = {
   user: {
     name: "Mizoguchi Coji",
     email: "coji@techtalk.jp",
@@ -183,4 +183,4 @@ export const sidebarData: SidebarData = {
       ],
     },
   ],
-}
+} as const satisfies SidebarData

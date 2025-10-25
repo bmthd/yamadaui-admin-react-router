@@ -6,14 +6,14 @@ interface User {
 
 interface Team {
   name: string
-  logo: React.ElementType
+  logo: React.FC
   plan: string
 }
 
 interface BaseNavItem {
   title: string
   badge?: string
-  icon?: React.ElementType
+  icon?: React.ComponentType
 }
 
 type NavLink = BaseNavItem & {
