@@ -10,6 +10,7 @@
     "format": "biome check --formatter-enabled=true --linter-enabled=false .",
     "format:fix": "biome format --write .",
     "typecheck": "react-router typegen && bun tsgo --noemit",
+    "similarity": "similarity-ts",
     "prevalidate": "biome check --fix --unsafe .",
     "validate": "run-p lint format typecheck",
     "prepare": "lefthook install"
@@ -34,7 +35,7 @@
     "zod": "^4.1.4"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.2",
+    "@biomejs/biome": "^2.3.0",
     "@faker-js/faker": "^10.0.0",
     "@react-router/dev": "^7.8.2",
     "@react-router/remix-routes-option-adapter": "^7.8.2",
