@@ -1,9 +1,10 @@
 import { useState } from "react"
-import { Link as RouterLink, useLocation } from "react-router"
+import { useLocation } from "react-router"
 import {
   Avatar,
   Box,
   Button,
+  ButtonLink,
   Flex,
   HStack,
   Icon,
@@ -19,6 +20,7 @@ import {
   Separator,
   SunIcon,
   Text,
+  TextLink,
   useColorMode,
   useWindowEvent,
   VStack,
@@ -109,53 +111,32 @@ export function TopNav({ links }: TopNavProps) {
           </Button>
         </Menu.Trigger>
         <Menu.Content alignItems="start">
-          {links.map((link) =>
-            link.disabled ? (
-              <Menu.Item key={link.title} disabled>
-                <Text color="gray.400">{link.title}</Text>
+          <Menu.Group>
+            {links.map((link) => (
+              <Menu.Item key={link.href}>
+                <TextLink to={link.href} data-disabled={link.disabled}>
+                  {link.title}
+                </TextLink>
               </Menu.Item>
-            ) : (
-              <Menu.Item key={link.href} asChild>
-                <RouterLink to={link.href}>
-                  <Text>{link.title}</Text>
-                </RouterLink>
-              </Menu.Item>
-            )
-          )}
+            ))}
+          </Menu.Group>
         </Menu.Content>
       </Menu.Root>
 
-      <HStack gap={{ base: 4, lg: 6 }} display={{ base: "flex", md: "none" }}>
+      <HStack gap="xs" display={{ base: "flex", md: "none" }}>
         {links.map((link) => {
           const isActive =
             location.pathname === link.href ||
             location.pathname.startsWith(`${link.href}/`)
-
-          return link.disabled ? (
-            <Text
-              key={link.title}
-              fontSize="sm"
-              fontWeight="medium"
-              color="gray.400"
-            >
-              {link.title}
-            </Text>
-          ) : (
-            <Box
+          return (
+            <ButtonLink
               key={link.href}
-              as={RouterLink}
               to={link.href}
-              fontSize="sm"
-              fontWeight="medium"
-              color={isActive ? "gray.900" : "gray.500"}
-              borderBottomWidth={isActive ? "2px" : "0px"}
-              borderColor="gray.900"
-              pb={1}
-              textDecoration="none"
-              transition="color 0.2s ease"
+              variant="ghost"
+              bg={isActive ? "ButtonShadow" : undefined}
             >
               {link.title}
-            </Box>
+            </ButtonLink>
           )
         })}
       </HStack>

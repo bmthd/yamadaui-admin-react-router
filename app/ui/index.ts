@@ -147,3 +147,5 @@ export * from "@yamada-ui/react/providers/i18n-provider"
 export * from "@yamada-ui/react/providers/ui-provider"
 export * from "@yamada-ui/react/theme"
 export * from "@yamada-ui/react/utils"
+
+export * from "./link"

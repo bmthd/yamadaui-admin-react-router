@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router"
+import { useLocation } from "react-router"
 import { TeamSwitcher } from "~/components/layout/team-switcher"
 import { sidebarData } from "~/data/sidebar-data"
 import type { NavItem, NavLink } from "~/types/sidebar"
@@ -17,6 +17,7 @@ import {
   useDisclosure,
   VStack,
 } from "~/ui"
+import { ButtonLink } from "~/ui/link"
 
 interface SidebarProps extends FlexProps {
   isCollapsed: boolean
@@ -170,8 +171,7 @@ function NavLinkComponent({
   isSubItem = false,
 }: NavLinkProps) {
   return (
-    <Button
-      as={Link}
+    <ButtonLink
       to={item.url}
       variant="ghost"
       bg={checkIsActive(currentPath, item) ? "bg.subtle" : undefined}
@@ -203,7 +203,7 @@ function NavLinkComponent({
           </Show>
         </Show>
       </HStack>
-    </Button>
+    </ButtonLink>
   )
 }
 
